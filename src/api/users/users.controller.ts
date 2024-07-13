@@ -1,7 +1,6 @@
 import {
     Controller,
     Get,
-    Post,
     Put,
     Delete,
     Param,
@@ -13,7 +12,7 @@ import {
   } from '@nestjs/common';
   import { UsersService } from './users.service';
   import { UpdateUserDto } from '../../dto/users/update.dto';
-  import { Request, Response } from 'express';
+  import { Response } from 'express';
   
   @Controller('/api/users')
   export class UsersController {

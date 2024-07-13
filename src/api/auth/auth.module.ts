@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthService } from './auth.service';
 import { RolesService } from '../../schemas/roles/roles.service';
 import { AuthController } from './auth.controller';
-import { UsersSchemaModule } from '../../schemas/users/users.schema.module';
+import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
@@ -13,7 +13,7 @@ import { AuthMiddleware } from './auth.middleware';
 
 @Module({
   imports: [
-    UsersSchemaModule,
+    UsersModule,
     RolesModule,
     PassportModule,
     JwtModule.register({

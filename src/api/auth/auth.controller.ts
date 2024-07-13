@@ -6,12 +6,11 @@ import {
   ValidationPipe,
   Req,
   Res,
-  Next,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from '../../dto/users/create.dto';
 import { LoginDto } from '../../dto/users/login.dto';
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 
 @Controller('/api/auth')
 export class AuthController {
@@ -43,10 +42,7 @@ export class AuthController {
   }
 
   @Get('protected')
-  async getAuthRoot(
-    @Req() req: Request,
-    @Res() res: Response,
-  ) {
+  async getAuthRoot(@Req() req: Request, @Res() res: Response) {
     return res.status(200).json({
       message: this.authService.getAuthRoot(),
       status: 'success',

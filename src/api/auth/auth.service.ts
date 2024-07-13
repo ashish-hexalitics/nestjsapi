@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UsersSchemaService } from '../../schemas/users/users.schema.service';
+import { UsersService } from '../users/users.service';
 import { RolesService } from '../../schemas/roles/roles.service';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from '../../dto/users/create.dto';
@@ -18,7 +18,7 @@ export interface IUser {
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersSchemaService,
+    private usersService: UsersService,
     private jwtService: JwtService,
     private rolesService: RolesService,
   ) {}

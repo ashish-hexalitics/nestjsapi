@@ -8,11 +8,21 @@ import { UpdateUserDto } from '../../dto/users/update.dto';
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
+  async create(user: any): Promise<User> {
+    const createdUser = new this.userModel(user);
+    return createdUser.save();
+  }
+
+  async findOne(email: string): Promise<User | undefined> {
+    const user = await this.userModel.findOne({ email }).exec();
+    return user ?? undefined;
+  }
+
   async findAll(): Promise<User[]> {
     return this.userModel.find().exec();
   }
 
-  async findOne(id: string): Promise<User | null> {
+  async findById(id: string): Promise<User | null> {
     return this.userModel.findById(id).exec();
   }
 

@@ -98,8 +98,5 @@ export class AuthService {
   getAuthRoot(): string {
     return 'Auth Root';
   }
-
-  // use(req: Request, res: Response, next: NextFunction) {
-  //   this.isLoggedIn(req, res, next);
-  // }
+  
 }

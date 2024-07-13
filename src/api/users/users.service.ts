@@ -13,7 +13,7 @@ export class UsersService {
     return createdUser.save();
   }
 
-  async findOne(email: string): Promise<User | undefined> {
+  async findByEmail(email: string): Promise<User | undefined> {
     const user = await this.userModel.findOne({ email }).exec();
     return user ?? undefined;
   }
@@ -22,7 +22,7 @@ export class UsersService {
     return this.userModel.find().exec();
   }
 
-  async findById(id: string): Promise<User | null> {
+  async findOne(id: string): Promise<User | null> {
     return this.userModel.findById(id).exec();
   }
 

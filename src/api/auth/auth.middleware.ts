@@ -1,7 +1,8 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { JwtService, JwtVerifyOptions } from '@nestjs/jwt';
 import { Request, Response, NextFunction } from 'express';
 import { UsersService } from '../users/users.service';
+import { TokenExpiredError } from 'jsonwebtoken';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
@@ -19,13 +20,14 @@ export class AuthMiddleware implements NestMiddleware {
           status: 'error',
         });
       }
-
+      
       const token = authHeader.split(' ')[1];
       const decoded = this.jwtService.verify(token);
-      const user = await this.usersService.findOne(decoded.email);
+      const user = await this.usersService.findByEmail(decoded.email);
+
       if (!user) {
         return res.status(403).json({
-          message: 'invalid token',
+          message: 'Invalid token',
           status: 'error',
         });
       }
@@ -33,6 +35,12 @@ export class AuthMiddleware implements NestMiddleware {
       req.user = user;
       next();
     } catch (error) {
+      if (error instanceof TokenExpiredError) {
+        return res.status(403).json({
+          message: 'Token has expired',
+          status: 'error',
+        });
+      }
       return res.status(403).json({
         message: 'User is not logged in',
         status: 'error',

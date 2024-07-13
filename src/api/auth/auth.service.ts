@@ -44,7 +44,7 @@ export class AuthService {
           .json({ message: `Permission denied`, status: 'error' });
       }
 
-      const existingUser = await this.usersService.findOne(userDto.email);
+      const existingUser = await this.usersService.findByEmail(userDto.email);
 
       if (existingUser) {
         return res
@@ -68,7 +68,7 @@ export class AuthService {
   }
 
   async validateUser(userDto: LoginDto): Promise<any> {
-    const user: any = await this.usersService.findOne(userDto.email);
+    const user: any = await this.usersService.findByEmail(userDto.email);
     if (user && (await bcrypt.compare(userDto.password, user.password))) {
       const { password, ...result } = user.toObject();
       return result;

@@ -1,7 +1,5 @@
 import { Module,MiddlewareConsumer,RequestMethod } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { AuthService } from './auth.service';
-import { RolesService } from '../../schemas/roles/roles.service';
 import { AuthController } from './auth.controller';
 import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ApiModule } from './api/api.module';
-import { UsersModule } from './schemas/users/users.module';
+import { UsersSchemaModule } from './schemas/users/users.schema.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RolesModule } from './schemas/roles/roles.module';
 
@@ -11,7 +11,7 @@ import { RolesModule } from './schemas/roles/roles.module';
     MongooseModule.forRoot('mongodb://localhost/nest'),
     RolesModule,
     ApiModule,
-    // UsersModule,
+    UsersSchemaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { User, UserDocument } from './user.schema';
 
 @Injectable()
-export class UsersService {
+export class UsersSchemaService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async create(user: any): Promise<User> {

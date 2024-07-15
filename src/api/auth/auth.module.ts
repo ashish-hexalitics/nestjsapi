@@ -1,4 +1,4 @@
-import { Module,MiddlewareConsumer,RequestMethod } from '@nestjs/common';
+import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UsersModule } from '../users/users.module';
@@ -7,7 +7,8 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
 import { RolesModule } from '../../schemas/roles/roles.module';
 import { AuthMiddleware } from './auth.middleware';
-
+import { AuthPermission } from './auth.permission';
+import { Role } from "../../schemas/roles/role.enum";
 
 @Module({
   imports: [
@@ -16,11 +17,11 @@ import { AuthMiddleware } from './auth.middleware';
     PassportModule,
     JwtModule.register({
       secret: 'xgyjwmkzwklgdywmzjsoismqskjxxjww',
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '5min' },
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService,JwtStrategy],
+  providers: [AuthService, JwtStrategy],
   exports: [AuthService],
 })
 export class AuthModule {
@@ -28,8 +29,11 @@ export class AuthModule {
     consumer
       .apply(AuthMiddleware)
       .forRoutes(
-        { path: '/api/users', method: RequestMethod.ALL },
-        { path: '/api/auth/another-protected-route', method: RequestMethod.ALL },
+        { path: '/api/users', method: RequestMethod.ALL }
+      )
+      .apply(AuthPermission.create(Role.Admin))
+      .forRoutes(
+        { path: '/api/users', method: RequestMethod.ALL }
       );
   }
 }

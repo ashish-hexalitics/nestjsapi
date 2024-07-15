@@ -21,4 +21,8 @@ export class RolesService implements OnModuleInit {
   async findOneByName(name: string): Promise<Role | null> {
     return this.roleModel.findOne({ name }).exec();
   }
+
+  async findOne(id: string): Promise<Role | null> {
+    return this.roleModel.findOne({ _id: id }).exec();
+  }
 }

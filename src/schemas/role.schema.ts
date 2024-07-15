@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 
 export type RoleDocument = Role & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Role {
   @Prop({ unique: true })
   name: string;

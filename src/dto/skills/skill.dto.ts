@@ -10,3 +10,9 @@ export class SkillDto {
   @IsIn(['active', 'deactive'])
   status: string = 'active';
 }
+
+export class UserSkillDto {
+  @IsString()
+  @IsNotEmpty()
+  skillId: string;
+}

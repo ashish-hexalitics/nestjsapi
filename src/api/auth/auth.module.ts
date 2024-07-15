@@ -34,6 +34,8 @@ export class AuthModule {
         { path: '/api/users/info/:id', method: RequestMethod.ALL },
         { path: '/api/skills', method: RequestMethod.POST },
         { path: '/api/skills/:id', method: RequestMethod.ALL },
+        { path: '/api/skills/user/:userId', method: RequestMethod.ALL },
+        { path: '/api/skills/user/:userId/:skillId', method: RequestMethod.ALL },
       )
       .apply(AuthPermission.create(Role.Admin))
       .forRoutes(
@@ -43,6 +45,10 @@ export class AuthModule {
         { path: '/api/skills/:id', method: RequestMethod.PUT },
       )
       .apply(AuthPermission.create(Role.Student))
-      .forRoutes({ path: '/api/users/:id', method: RequestMethod.ALL });
+      .forRoutes(
+        { path: '/api/users/:id', method: RequestMethod.ALL },
+        { path: '/api/skills/user/:userId', method: RequestMethod.ALL },
+        { path: '/api/skills/user/:userId/:skillId', method: RequestMethod.ALL },
+      );
   }
 }

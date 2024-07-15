@@ -32,12 +32,17 @@ export class AuthModule {
         { path: '/api/users', method: RequestMethod.ALL },
         { path: '/api/users/:id', method: RequestMethod.ALL },
         { path: '/api/users/info/:id', method: RequestMethod.ALL },
+        { path: '/api/skills', method: RequestMethod.POST },
+        { path: '/api/skills/:id', method: RequestMethod.ALL },
       )
       .apply(AuthPermission.create(Role.Admin))
-      .forRoutes({ path: '/api/users', method: RequestMethod.ALL })
-      .apply(AuthPermission.create(Role.Student))
       .forRoutes(
-        { path: '/api/users/:id', method: RequestMethod.ALL },
-      );
+        { path: '/api/users', method: RequestMethod.ALL },
+        { path: '/api/skills', method: RequestMethod.POST },
+        { path: '/api/skills/:id', method: RequestMethod.DELETE },
+        { path: '/api/skills/:id', method: RequestMethod.PUT },
+      )
+      .apply(AuthPermission.create(Role.Student))
+      .forRoutes({ path: '/api/users/:id', method: RequestMethod.ALL });
   }
 }

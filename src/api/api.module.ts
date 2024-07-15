@@ -5,9 +5,18 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { SkillsModule } from './skills/skills.module';
+import { EmploymentsModule } from './employments/employments.module';
+import { EducationsModule } from './educations/educations.module';
 
 @Module({
-  imports: [RolesModule, AuthModule, UsersModule, SkillsModule],
+  imports: [
+    RolesModule,
+    AuthModule,
+    UsersModule,
+    SkillsModule,
+    EmploymentsModule,
+    EducationsModule,
+  ],
   controllers: [ApiController],
   providers: [ApiService],
 })

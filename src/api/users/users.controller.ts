@@ -85,4 +85,16 @@ export class UsersController {
       updatedUser,
     });
   }
+
+  @Get('/info/:id')
+  async findUserInfo(@Param('id') id: string, @Res() res: Response) {
+    const user = await this.usersService.findUserInfo(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return res.status(HttpStatus.OK).json({
+      message: 'User fetched successfully',
+      user,
+    });
+  }
 }

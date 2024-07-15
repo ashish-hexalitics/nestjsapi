@@ -6,7 +6,7 @@ import { CreateUserDto } from '../../dto/users/create.dto';
 import { LoginDto } from 'src/dto/users/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response, NextFunction } from 'express';
-import { Role } from '../roles/role.enum';
+import { Role } from '../../enums/role.enum';
 
 export interface IUser {
   name: string;
@@ -98,5 +98,4 @@ export class AuthService {
   getAuthRoot(): string {
     return 'Auth Root';
   }
-  
 }

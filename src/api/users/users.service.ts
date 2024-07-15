@@ -28,6 +28,10 @@ export class UsersService {
   }
 
   async findOne(id: string): Promise<User | null> {
+    return this.userModel.findById(id).exec();
+  }
+
+  async findUserInfo(id: string): Promise<User | null> {
     return this.userModel.findById(id).populate('userInfo').exec();
   }
 
@@ -45,7 +49,7 @@ export class UsersService {
     userId: string,
     updateUserInfoDto: UpdateUserInfoDto,
   ): Promise<UserInfo> {
-    const user:any = await this.userModel
+    const user: any = await this.userModel
       .findById(userId)
       .populate('userInfo')
       .exec();

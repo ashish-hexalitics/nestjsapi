@@ -8,7 +8,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { RolesModule } from '../roles/roles.module';
 import { AuthMiddleware } from './auth.middleware';
 import { AuthPermission } from './auth.permission';
-import { Role } from '../roles/role.enum';
+import { Role } from '../../enums/role.enum';
 
 @Module({
   imports: [

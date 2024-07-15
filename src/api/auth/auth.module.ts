@@ -5,10 +5,10 @@ import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
-import { RolesModule } from '../../schemas/roles/roles.module';
+import { RolesModule } from '../roles/roles.module';
 import { AuthMiddleware } from './auth.middleware';
 import { AuthPermission } from './auth.permission';
-import { Role } from "../../schemas/roles/role.enum";
+import { Role } from '../roles/role.enum';
 
 @Module({
   imports: [
@@ -29,11 +29,12 @@ export class AuthModule {
     consumer
       .apply(AuthMiddleware)
       .forRoutes(
-        { path: '/api/users', method: RequestMethod.ALL }
+        { path: '/api/users', method: RequestMethod.ALL },
+        { path: '/api/users/:id', method: RequestMethod.ALL },
       )
       .apply(AuthPermission.create(Role.Admin))
-      .forRoutes(
-        { path: '/api/users', method: RequestMethod.ALL }
-      );
+      .forRoutes({ path: '/api/users', method: RequestMethod.ALL })
+      .apply(AuthPermission.create(Role.Student))
+      .forRoutes({ path: '/api/users/:id', method: RequestMethod.ALL });
   }
 }

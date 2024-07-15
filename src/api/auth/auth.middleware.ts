@@ -2,7 +2,7 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { JwtService, JwtVerifyOptions } from '@nestjs/jwt';
 import { Request, Response, NextFunction } from 'express';
 import { UsersService } from '../users/users.service';
-import { RolesService } from '../../schemas/roles/roles.service';
+import { RolesService } from '../roles/roles.service';
 import { TokenExpiredError } from 'jsonwebtoken';
 import { IUser } from './auth.service';
 

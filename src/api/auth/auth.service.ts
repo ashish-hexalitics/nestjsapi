@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
-import { RolesService } from '../../schemas/roles/roles.service';
+import { RolesService } from '../roles/roles.service';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from '../../dto/users/create.dto';
 import { LoginDto } from 'src/dto/users/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response, NextFunction } from 'express';
-import { Role } from '../../schemas/roles/role.enum';
+import { Role } from '../roles/role.enum';
 
 export interface IUser {
   name: string;

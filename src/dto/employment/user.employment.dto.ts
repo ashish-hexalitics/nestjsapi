@@ -1,4 +1,5 @@
 import { IsString, IsNotEmpty, IsDate, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreateUserEmploymentDto {
   @IsString()
@@ -15,10 +16,12 @@ export class CreateUserEmploymentDto {
 
   @IsDate()
   @IsNotEmpty()
+  @Type(() => Date)
   startDate: Date;
 
   @IsDate()
   @IsNotEmpty()
+  @Type(() => Date)
   endDate: Date;
 
   @IsString()

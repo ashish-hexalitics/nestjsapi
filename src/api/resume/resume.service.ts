@@ -32,15 +32,14 @@ export class ResumeService {
       throw new NotFoundException('User not found');
     }
 
-    const userDetails = await this.userModel.findOne({ _id: userId });
+    const userDetails = await this.userModel.findOne({ _id: userId }).populate('userInfo');
     const personalDetails = await this.userInfoModel.findOne({ userId });
-    const skills = await this.skillModel.find({ userId });
+    const skills = await this.skillModel.find({ userId }).populate('skillId');
     const education = await this.userEducationModel.find({ userId });
     const employment = await this.userEmploymentModel.find({ userId });
 
     return {
       user: userDetails,
-      personalDetails,
       skills,
       education,
       employment,

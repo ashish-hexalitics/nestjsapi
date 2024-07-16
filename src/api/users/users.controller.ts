@@ -11,8 +11,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UpdateUserDto } from '../../dto/users/update.dto';
-import { UpdateUserInfoDto } from '../../dto/users/update-user-info.dto';
+import { UpdateUserDto, UpdateUserInfoDto } from '../../dto/users/user.dto';
 import { Response } from 'express';
 
 @Controller('/api/users')

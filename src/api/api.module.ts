@@ -7,6 +7,7 @@ import { RolesModule } from './roles/roles.module';
 import { SkillsModule } from './skills/skills.module';
 import { EmploymentsModule } from './employments/employments.module';
 import { EducationsModule } from './educations/educations.module';
+import { ResumeModule } from './resume/resume.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { EducationsModule } from './educations/educations.module';
     SkillsModule,
     EmploymentsModule,
     EducationsModule,
+    ResumeModule,
   ],
   controllers: [ApiController],
   providers: [ApiService],

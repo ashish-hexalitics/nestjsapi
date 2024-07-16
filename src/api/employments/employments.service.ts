@@ -5,7 +5,10 @@ import {
   UserEmployment,
   UserEmploymentDocument,
 } from '../../schemas/user.employment.schema';
-import { UserEmploymentDto } from '../../dto/employment/user.employment.dto';
+import {
+  CreateUserEmploymentDto,
+  UpdateUserEmploymentDto,
+} from '../../dto/employment/user.employment.dto';
 
 @Injectable()
 export class EmploymentsService {
@@ -18,12 +21,22 @@ export class EmploymentsService {
     return this.userEmploymentModel.find({ userId }).exec();
   }
 
-  async createUserEmployment(userEmploymentDto: UserEmploymentDto): Promise<UserEmployment> {
+  async createUserEmployment(
+    userEmploymentDto: CreateUserEmploymentDto,
+  ): Promise<UserEmployment> {
     return this.userEmploymentModel.create(userEmploymentDto);
   }
 
-  async updateUserEmployment(id: string, userEmploymentDto: UserEmploymentDto): Promise<UserEmployment | null> {
-    return this.userEmploymentModel.findByIdAndUpdate(id, userEmploymentDto, { new: true }).exec();
+  async updateUserEmployment(
+    id: string,
+    userId: string,
+    userEmploymentDto: UpdateUserEmploymentDto,
+  ): Promise<UserEmployment | null> {
+    return this.userEmploymentModel
+      .findOneAndUpdate({ _id: id, userId: userId }, userEmploymentDto, {
+        new: true,
+      })
+      .exec();
   }
 
   async deleteUserEmployment(id: string): Promise<UserEmployment | null> {

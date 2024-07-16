@@ -36,6 +36,12 @@ export class AuthModule {
         { path: '/api/skills/:id', method: RequestMethod.ALL },
         { path: '/api/skills/user/:userId', method: RequestMethod.ALL },
         { path: '/api/skills/user/:userId/:skillId', method: RequestMethod.ALL },
+        { path: '/api/educations', method: RequestMethod.POST },
+        { path: '/api/educations/:userId', method: RequestMethod.GET },
+        { path: '/api/educations/:userId/:educationId', method: RequestMethod.ALL },
+        { path: '/api/employments', method: RequestMethod.POST },
+        { path: '/api/employments/:userId', method: RequestMethod.GET },
+        { path: '/api/employments/:userId/:employmentId', method: RequestMethod.ALL },
       )
       .apply(AuthPermission.create(Role.Admin))
       .forRoutes(
@@ -49,6 +55,10 @@ export class AuthModule {
         { path: '/api/users/:id', method: RequestMethod.ALL },
         { path: '/api/skills/user/:userId', method: RequestMethod.ALL },
         { path: '/api/skills/user/:userId/:skillId', method: RequestMethod.ALL },
+        { path: '/api/educations', method: RequestMethod.POST },
+        { path: '/api/educations/:userId/:educationId', method: RequestMethod.ALL },
+        { path: '/api/employments', method: RequestMethod.POST },
+        { path: '/api/employments/:userId/:employmentId', method: RequestMethod.ALL },
       );
   }
 }

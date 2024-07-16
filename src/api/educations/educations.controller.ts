@@ -6,14 +6,18 @@ import {
   Delete,
   Param,
   Body,
+  Req,
   Res,
   HttpStatus,
 } from '@nestjs/common';
-import { Response } from 'express';
-import { UserEducationDto } from '../../dto/education/user.education.dto';
+import { Response, Request } from 'express';
+import {
+  CreateUserEducationDto,
+  updateUserEducationDto,
+} from '../../dto/education/user.education.dto';
 import { EducationsService } from './educations.service';
 
-@Controller('educations')
+@Controller('/api/educations')
 export class EducationsController {
   constructor(private educationsService: EducationsService) {}
 
@@ -31,34 +35,45 @@ export class EducationsController {
 
   @Post()
   async createUserEducation(
-    @Body() userEducationDto: UserEducationDto,
+    @Body() userEducationDto: CreateUserEducationDto,
     @Res() res: Response,
+    @Req() req: Request & { user: { _id: string } },
   ) {
-    const education =
-      await this.educationsService.createUserEducation(userEducationDto);
+    const userId: string = req.user._id.toString();
+    if (userId !== req.body.userId) {
+      return res
+        .status(HttpStatus.OK)
+        .json({ message: 'Invalid User Id Provided' });
+    }
+    const education = await this.educationsService.createUserEducation({
+      ...userEducationDto,
+      userId,
+    });
     return res
       .status(HttpStatus.OK)
       .json({ message: 'User education created successfully', education });
   }
 
-  @Put('/:id')
+  @Put('/:userId/:educationId')
   async updateUserEducation(
-    @Param('id') id: string,
-    @Body() userEducationDto: UserEducationDto,
+    @Param('educationId') id: string,
+    @Param('userId') userId: string,
+    @Body() userUpdateEducationDto: updateUserEducationDto,
     @Res() res: Response,
   ) {
     const education = await this.educationsService.updateUserEducation(
       id,
-      userEducationDto,
+      userId,
+      userUpdateEducationDto,
     );
     return res
       .status(HttpStatus.OK)
       .json({ message: 'User education updated successfully', education });
   }
 
-  @Delete('/:id')
-  async deleteUserEducation(@Param('id') id: string, @Res() res: Response) {
-    const education = await this.educationsService.deleteUserEducation(id);
+  @Delete('/:userId/:educationId')
+  async deleteUserEducation(@Param('educationId') educationId: string, @Res() res: Response) {
+    const education = await this.educationsService.deleteUserEducation(educationId);
     return res
       .status(HttpStatus.OK)
       .json({ message: 'User education deleted successfully', education });

@@ -10,7 +10,10 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { UserEmploymentDto } from '../../dto/employment/user.employment.dto';
+import {
+  CreateUserEmploymentDto,
+  UpdateUserEmploymentDto,
+} from '../../dto/employment/user.employment.dto';
 import { EmploymentsService } from './employments.service';
 
 @Controller('/api/employments')
@@ -31,7 +34,7 @@ export class EmploymentsController {
 
   @Post()
   async createUserEmployment(
-    @Body() userEmploymentDto: UserEmploymentDto,
+    @Body() userEmploymentDto: CreateUserEmploymentDto,
     @Res() res: Response,
   ) {
     const employment =
@@ -41,22 +44,24 @@ export class EmploymentsController {
       .json({ message: 'User employment created successfully', employment });
   }
 
-  @Put('/:id')
+  @Put('/:userId/:employmentId')
   async updateUserEmployment(
-    @Param('id') id: string,
-    @Body() userEmploymentDto: UserEmploymentDto,
+    @Param('employmentId') employmentId: string,
+    @Param('userId') userId: string,
+    @Body() UpdateUserEmploymentDto: UpdateUserEmploymentDto,
     @Res() res: Response,
   ) {
     const employment = await this.employmentsService.updateUserEmployment(
-      id,
-      userEmploymentDto,
+      employmentId,
+      userId,
+      UpdateUserEmploymentDto,
     );
     return res
       .status(HttpStatus.OK)
       .json({ message: 'User employment updated successfully', employment });
   }
 
-  @Delete('/:id')
+  @Delete('/:userId/:employmentId')
   async deleteUserEmployment(@Param('id') id: string, @Res() res: Response) {
     const employment = await this.employmentsService.deleteUserEmployment(id);
     return res

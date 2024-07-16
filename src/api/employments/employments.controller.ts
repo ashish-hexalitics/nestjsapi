@@ -62,8 +62,8 @@ export class EmploymentsController {
   }
 
   @Delete('/:userId/:employmentId')
-  async deleteUserEmployment(@Param('id') id: string, @Res() res: Response) {
-    const employment = await this.employmentsService.deleteUserEmployment(id);
+  async deleteUserEmployment(@Param('employmentId') employmentId: string, @Res() res: Response) {
+    const employment = await this.employmentsService.deleteUserEmployment(employmentId);
     return res
       .status(HttpStatus.OK)
       .json({ message: 'User employment deleted successfully', employment });

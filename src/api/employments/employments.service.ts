@@ -28,18 +28,18 @@ export class EmploymentsService {
   }
 
   async updateUserEmployment(
-    id: string,
+    employmentId: string,
     userId: string,
     userEmploymentDto: UpdateUserEmploymentDto,
   ): Promise<UserEmployment | null> {
     return this.userEmploymentModel
-      .findOneAndUpdate({ _id: id, userId: userId }, userEmploymentDto, {
+      .findOneAndUpdate({ _id: employmentId, userId: userId }, userEmploymentDto, {
         new: true,
       })
       .exec();
   }
 
-  async deleteUserEmployment(id: string): Promise<UserEmployment | null> {
-    return this.userEmploymentModel.findByIdAndDelete(id).exec();
+  async deleteUserEmployment(employmentId: string): Promise<UserEmployment | null> {
+    return this.userEmploymentModel.findByIdAndDelete(employmentId).exec();
   }
 }

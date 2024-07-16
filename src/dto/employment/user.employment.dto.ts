@@ -40,10 +40,12 @@ export class UpdateUserEmploymentDto {
 
   @IsDate()
   @IsNotEmpty()
+  @Type(() => Date)
   startDate: Date;
 
   @IsDate()
   @IsNotEmpty()
+  @Type(() => Date)
   endDate: Date;
 
   @IsString()

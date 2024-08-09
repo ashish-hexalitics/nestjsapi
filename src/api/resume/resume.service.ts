@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Req } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserSkill, UserSkillDocument } from '../../schemas/user.skill.schema';
@@ -13,6 +13,16 @@ import {
 import { User, UserDocument } from '../../schemas/user.schema';
 import { UserInfo, UserInfoDocument } from '../../schemas/user.info.schema';
 import { ResumeDto } from '../../dto/resume/resume.dto';
+import { Contentet, ContentetDocument } from '../../schemas/document.schema';
+// import {
+//   Controller,
+//   Get,
+//   Param,
+//   Res,
+//   Req,
+//   HttpStatus,
+//   Post,
+// } from '@nestjs/common';
 
 @Injectable()
 export class ResumeService {
@@ -24,6 +34,8 @@ export class ResumeService {
     private userEmploymentModel: Model<UserEmploymentDocument>,
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     @InjectModel(UserInfo.name) private userInfoModel: Model<UserInfoDocument>,
+    @InjectModel(Contentet.name)
+    private contentetModel: Model<ContentetDocument>,
   ) {}
 
   async generateResume(userId: string): Promise<ResumeDto> {
@@ -32,17 +44,26 @@ export class ResumeService {
       throw new NotFoundException('User not found');
     }
 
-    const userDetails = await this.userModel.findOne({ _id: userId }).populate('userInfo');
-    const personalDetails = await this.userInfoModel.findOne({ userId });
+    const userDetails = await this.userModel
+      .findOne({ _id: userId })
+      .populate('userInfo');
+    // const personalDetails = await this.userInfoModel.findOne({ userId });
     const skills = await this.skillModel.find({ userId }).populate('skillId');
     const education = await this.userEducationModel.find({ userId });
     const employment = await this.userEmploymentModel.find({ userId });
 
-    return {
+    const resumeData: ResumeDto = {
       user: userDetails,
       skills,
       education,
       employment,
     };
+
+    return resumeData;
+  }
+
+  async createResumeTemplate(@Req() req: Request) {
+    const userId = req.user.userId;
+    const contentet = await this.contentetModel.create({ createdBy: userId });
   }
 }

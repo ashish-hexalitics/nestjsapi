@@ -13,6 +13,7 @@ import {
 } from '../../schemas/user.employment.schema';
 import { UserInfo, UserInfoSchema } from '../../schemas/user.info.schema';
 import { User, UserSchema } from '../../schemas/user.schema';
+import { Contentet, ContentetSchema } from '../../schemas/document.schema';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { User, UserSchema } from '../../schemas/user.schema';
     MongooseModule.forFeature([{name:UserEmployment.name,schema:UserEmploymentSchema}]),
     MongooseModule.forFeature([{name:UserInfo.name, schema: UserInfoSchema}]),
     MongooseModule.forFeature([{name:User.name, schema: UserSchema}]),
+    MongooseModule.forFeature([{name:Contentet.name, schema: ContentetSchema}]),
   ],
   controllers: [ResumeController],
   providers: [ResumeService],

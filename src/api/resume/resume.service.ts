@@ -1,4 +1,11 @@
-import { Injectable, NotFoundException, Req } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  Req,
+  Res,
+  Body,
+  HttpStatus,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserSkill, UserSkillDocument } from '../../schemas/user.skill.schema';
@@ -14,16 +21,7 @@ import { User, UserDocument } from '../../schemas/user.schema';
 import { UserInfo, UserInfoDocument } from '../../schemas/user.info.schema';
 import { ResumeDto } from '../../dto/resume/resume.dto';
 import { Contentet, ContentetDocument } from '../../schemas/document.schema';
-// import {
-//   Controller,
-//   Get,
-//   Param,
-//   Res,
-//   Req,
-//   HttpStatus,
-//   Post,
-// } from '@nestjs/common';
-
+import { IUser } from '../../interfaces/user.interface'; // Adjust the path as needed
 @Injectable()
 export class ResumeService {
   constructor(
@@ -62,8 +60,31 @@ export class ResumeService {
     return resumeData;
   }
 
-  async createResumeTemplate(@Req() req: Request) {
-    const userId = req.user.userId;
-    const contentet = await this.contentetModel.create({ createdBy: userId });
+  async createResumeTemplate(
+    @Body() resumeData: { document: string },
+    @Req() req: Request & { user: IUser },
+  ) {
+    try {
+      const user: IUser = req.user;
+      const contentet = await this.contentetModel.create({
+        createdBy: user._id,
+        document: resumeData.document,
+      });
+      return contentet;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async getResumeTemplate(@Req() req: Request & { user: IUser }) {
+    try {
+      const user: IUser = req.user;
+      const contentets = await this.contentetModel.find({
+        createdBy: user._id,
+      });
+      return contentets;
+    } catch (error) {
+      return error;
+    }
   }
 }

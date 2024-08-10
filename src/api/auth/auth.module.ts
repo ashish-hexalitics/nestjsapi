@@ -52,7 +52,8 @@ export class AuthModule {
           method: RequestMethod.ALL,
         },
         { path: '/api/resume/:userId/', method: RequestMethod.ALL },
-        { path: '/api/resume/create/template', method: RequestMethod.POST },
+        { path: '/api/resume/create/template', method: RequestMethod.ALL },
+        { path: '/api/template-category', method: RequestMethod.ALL }
       )
       .apply(AuthPermission.create(Role.Admin))
       .forRoutes(
@@ -60,11 +61,11 @@ export class AuthModule {
         { path: '/api/skills', method: RequestMethod.POST },
         { path: '/api/skills/:id', method: RequestMethod.DELETE },
         { path: '/api/skills/:id', method: RequestMethod.PUT },
-        { path: '/api/resume/create/template', method: RequestMethod.POST },
+        { path: '/api/resume/create/template', method: RequestMethod.ALL },
+        { path: '/api/template-category', method: RequestMethod.ALL }
       )
       .apply(AuthPermission.create(Role.Student))
       .forRoutes(
-        { path: '/api/users/:id', method: RequestMethod.ALL },
         { path: '/api/skills/user/:userId', method: RequestMethod.ALL },
         {
           path: '/api/skills/user/:userId/:skillId',

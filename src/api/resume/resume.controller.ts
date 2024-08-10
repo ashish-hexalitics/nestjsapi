@@ -6,9 +6,11 @@ import {
   Req,
   HttpStatus,
   Post,
+  Body,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { ResumeService } from './resume.service';
+import { IUser } from '../../interfaces/user.interface'; // Adjust the path as needed
 
 @Controller('/api/resume')
 export class ResumeController {
@@ -16,17 +18,53 @@ export class ResumeController {
 
   @Get('/:userId')
   async generateResume(@Param('userId') userId: string, @Res() res: Response) {
-    const resume = await this.resumeService.generateResume(userId);
-    return res
-      .status(HttpStatus.OK)
-      .json({ message: 'Resume generated successfully', resume });
+    try {
+      const resume = await this.resumeService.generateResume(userId);
+      return res
+        .status(HttpStatus.OK)
+        .json({ message: 'Resume generated successfully', resume });
+    } catch (error) {
+      return res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: 'internal server error', error });
+    }
   }
 
   @Post('/create/template')
-  async createResumeTemplate(@Req() req: Request, @Res() res: Response) {
-    const resume = await this.resumeService.createResumeTemplate(req);
-    return res
-      .status(HttpStatus.OK)
-      .json({ message: 'Resume generated successfully', resume });
+  async createResumeTemplate(
+    @Body() resumeData: { document: string; templateName: string },
+    @Req() req: Request & { user: IUser },
+    @Res() res: Response,
+  ) {
+    try {
+      const resume = await this.resumeService.createResumeTemplate(
+        resumeData,
+        req,
+      );
+      return res
+        .status(HttpStatus.OK)
+        .json({ message: 'Resume saved successfully', resume });
+    } catch (error) {
+      return res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: 'internal server error', error });
+    }
+  }
+
+  @Get('/create/template')
+  async getResumeTemplate(
+    @Req() req: Request & { user: IUser },
+    @Res() res: Response,
+  ) {
+    try {
+      const templates = await this.resumeService.getResumeTemplate(req);
+      return res
+        .status(HttpStatus.OK)
+        .json({ message: 'Resume fetched successfully', templates });
+    } catch (error) {
+      return res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: 'internal server error', error });
+    }
   }
 }

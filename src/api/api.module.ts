@@ -8,7 +8,7 @@ import { SkillsModule } from './skills/skills.module';
 import { EmploymentsModule } from './employments/employments.module';
 import { EducationsModule } from './educations/educations.module';
 import { ResumeModule } from './resume/resume.module';
-
+import { TemplateCategoryModule } from './template-category/template-category.module';
 @Module({
   imports: [
     RolesModule,
@@ -18,6 +18,7 @@ import { ResumeModule } from './resume/resume.module';
     EmploymentsModule,
     EducationsModule,
     ResumeModule,
+    TemplateCategoryModule
   ],
   controllers: [ApiController],
   providers: [ApiService],

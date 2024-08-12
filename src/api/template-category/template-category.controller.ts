@@ -8,7 +8,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { TemplateCategoryService } from './template-category.service';
-import { CreateCategoryDto } from '../../dto/category/category.sto';
+import { CreateCategoryDto } from '../../dto/category/category.dto';
 import { Request, Response } from 'express';
 
 @Controller('/api/template-category')

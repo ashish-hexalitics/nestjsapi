@@ -1,11 +1,11 @@
-import { Injectable, Req } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
   TemplateCategory,
   TemplateCategoryDocument,
 } from '../../schemas/template-category.schema';
-import { CreateCategoryDto } from '../../dto/category/category.sto';
+import { CreateCategoryDto } from '../../dto/category/category.dto';
 
 @Injectable()
 export class TemplateCategoryService {
@@ -16,9 +16,13 @@ export class TemplateCategoryService {
 
   async getAllTemplateCategories(): Promise<TemplateCategory[] | Error> {
     try {
-      return this.templateCategorymodel.find().exec();
+      const categories = this.templateCategorymodel.find().exec();
+      return categories;
     } catch (error) {
-      return error;
+      throw new HttpException(
+        'Failed to fetch template categories',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 

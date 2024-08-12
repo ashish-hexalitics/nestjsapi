@@ -30,8 +30,8 @@ export class UsersService {
     return this.userModel.findById(id).exec();
   }
 
-  async findUserInfo(id: string): Promise<User | null> {
-    return this.userModel.findById(id).populate('userInfo').exec();
+  async findUserInfo(id: string): Promise<UserInfo | null> {
+    return this.userInfoModel.findOne({ userId: id }).exec();
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User | null> {
@@ -48,32 +48,30 @@ export class UsersService {
     userId: string,
     updateUserInfoDto: UpdateUserInfoDto,
   ): Promise<UserInfo> {
-    const user: any = await this.userModel
-      .findById(userId)
-      .populate('userInfo')
-      .exec();
-
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    if (!user.userInfo) {
-      user.userInfo = await this.userInfoModel.create({
+    try {
+      // Find the user info by userId
+      let userInfo: UserInfo | null = await this.userInfoModel.findOne({
         userId,
-        ...updateUserInfoDto,
       });
-    } else {
-      user.userInfo = await this.userInfoModel.findByIdAndUpdate(
-        user.userInfo._id,
-        updateUserInfoDto,
-        {
-          new: true,
-        },
-      );
+
+      if (!userInfo) {
+        userInfo = await this.userInfoModel.create({
+          userId,
+          ...updateUserInfoDto,
+        });
+      } else {
+        userInfo = await this.userInfoModel
+          .findOneAndUpdate(
+            { userId: userInfo.userId },
+            { $set: updateUserInfoDto },
+            { new: true },
+          )
+          .exec();
+      }
+
+      return userInfo as UserInfo;
+    } catch (error) {
+      throw new Error(`Failed to update user info: ${error.message}`);
     }
-
-    await user.save();
-
-    return user.userInfo;
   }
 }

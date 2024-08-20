@@ -1,5 +1,6 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { User } from './user.schema';
+import { TemplateCategory } from './template-category.schema';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 
 enum Size {
@@ -13,8 +14,8 @@ enum Size {
 }
 
 enum Orientation {
-  portrait = "portrait",
-  landscape = "landscape",
+  portrait = 'portrait',
+  landscape = 'landscape',
 }
 
 export type ContentetDocument = Contentet & Document;
@@ -35,6 +36,12 @@ export class Contentet {
   layer: MongooseSchema.Types.Mixed;
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
   createdBy: User;
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'TemplateCategory',
+    required: true,
+  })
+  categoryId: TemplateCategory;
 }
 
 export const ContentetSchema = SchemaFactory.createForClass(Contentet);

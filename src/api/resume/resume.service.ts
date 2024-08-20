@@ -61,7 +61,7 @@ export class ResumeService {
   }
 
   async createResumeTemplate(
-    @Body() resumeData: { document: string },
+    @Body() resumeData: { document: string; categoryId: string },
     @Req() req: Request & { user: IUser },
   ) {
     try {
@@ -69,6 +69,7 @@ export class ResumeService {
       const contentet = await this.contentetModel.create({
         createdBy: user._id,
         document: resumeData.document,
+        categoryId: resumeData.categoryId,
       });
       return contentet;
     } catch (error) {

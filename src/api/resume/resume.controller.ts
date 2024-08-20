@@ -32,7 +32,8 @@ export class ResumeController {
 
   @Post('/create/template')
   async createResumeTemplate(
-    @Body() resumeData: { document: string; templateName: string },
+    @Body()
+    resumeData: { document: string; templateName: string; categoryId: string },
     @Req() req: Request & { user: IUser },
     @Res() res: Response,
   ) {

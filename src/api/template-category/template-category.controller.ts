@@ -3,17 +3,21 @@ import {
   Req,
   Res,
   Post,
+  Put,
   Get,
+  Delete,
   Body,
   HttpStatus,
+  Param,
 } from '@nestjs/common';
 import { TemplateCategoryService } from './template-category.service';
-import { CreateCategoryDto } from '../../dto/category/category.dto';
+import { CategoryDto } from '../../dto/category/category.dto';
 import { Request, Response } from 'express';
 
 @Controller('/api/template-category')
 export class TemplateCategoryController {
   constructor(private templateCategoryService: TemplateCategoryService) {}
+
   @Get()
   async getAllTemplateCategories(@Res() res: Response) {
     try {
@@ -31,9 +35,8 @@ export class TemplateCategoryController {
 
   @Post()
   async createTemplateCategories(
-    @Req() req: Request,
     @Res() res: Response,
-    @Body() categoryDto: CreateCategoryDto,
+    @Body() categoryDto: CategoryDto,
   ) {
     try {
       const category =
@@ -43,6 +46,60 @@ export class TemplateCategoryController {
       return res
         .status(HttpStatus.CREATED)
         .json({ message: 'category created', category });
+    } catch (error) {
+      return res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: 'internal server error', error });
+    }
+  }
+
+  @Put('/:categoryId')
+  async updateTemplateCategories(
+    @Res() res: Response,
+    @Body() categoryDto: CategoryDto,
+    @Param('categoryId') categoryId: string,
+  ) {
+    try {
+      const category = await this.templateCategoryService.updateTemplateCategoy(
+        categoryId,
+        categoryDto,
+      );
+      return res
+        .status(HttpStatus.OK)
+        .json({ message: 'category updated', category });
+    } catch (error) {
+      return res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: 'internal server error', error });
+    }
+  }
+
+  @Post('/clone/:categoryId')
+  async cloneTemplateCategory(
+    @Res() res: Response,
+    @Param('categoryId') categoryId: string,
+  ) {
+    try {
+      const clonedCategory =
+        await this.templateCategoryService.cloneTemplateCategory(categoryId);
+      return res
+        .status(HttpStatus.CREATED)
+        .json({ message: 'category cloned', category: clonedCategory });
+    } catch (error) {
+      return res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: 'internal server error', error });
+    }
+  }
+
+  @Delete('/:categoryId')
+  async deleteTemplateCategory(
+    @Res() res: Response,
+    @Param('categoryId') categoryId: string,
+  ) {
+    try {
+      await this.templateCategoryService.deleteTemplateCategory(categoryId);
+      return res.status(HttpStatus.OK).json({ message: 'category deleted' });
     } catch (error) {
       return res
         .status(HttpStatus.INTERNAL_SERVER_ERROR)

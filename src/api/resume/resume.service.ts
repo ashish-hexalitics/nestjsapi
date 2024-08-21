@@ -19,7 +19,7 @@ import {
 } from '../../schemas/user.education.schema';
 import { User, UserDocument } from '../../schemas/user.schema';
 import { UserInfo, UserInfoDocument } from '../../schemas/user.info.schema';
-import { ResumeDto } from '../../dto/resume/resume.dto';
+import { ResumeDto, CreateResumeDto } from '../../dto/resume/resume.dto';
 import { Contentet, ContentetDocument } from '../../schemas/document.schema';
 import { IUser } from '../../interfaces/user.interface'; // Adjust the path as needed
 @Injectable()
@@ -61,7 +61,7 @@ export class ResumeService {
   }
 
   async createResumeTemplate(
-    @Body() resumeData: { document: string; categoryId: string },
+    @Body() resumeData: CreateResumeDto,
     @Req() req: Request & { user: IUser },
   ) {
     try {
@@ -70,6 +70,7 @@ export class ResumeService {
         createdBy: user._id,
         document: resumeData.document,
         categoryId: resumeData.categoryId,
+        layer: resumeData.layer,
       });
       return contentet;
     } catch (error) {

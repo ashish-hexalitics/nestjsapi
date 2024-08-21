@@ -11,6 +11,7 @@ import {
 import { Response } from 'express';
 import { ResumeService } from './resume.service';
 import { IUser } from '../../interfaces/user.interface'; // Adjust the path as needed
+import { CreateResumeDto } from '../../dto/resume/resume.dto';
 
 @Controller('/api/resume')
 export class ResumeController {
@@ -33,7 +34,7 @@ export class ResumeController {
   @Post('/create/template')
   async createResumeTemplate(
     @Body()
-    resumeData: { document: string; templateName: string; categoryId: string },
+    resumeData: CreateResumeDto,
     @Req() req: Request & { user: IUser },
     @Res() res: Response,
   ) {

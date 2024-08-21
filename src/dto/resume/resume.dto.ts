@@ -9,3 +9,10 @@ export class ResumeDto {
   education: UserEducation[];
   employment: UserEmployment[];
 }
+
+export class CreateResumeDto  {
+  document: string;
+  templateName: string;
+  categoryId: string;
+  layer: any[];
+}

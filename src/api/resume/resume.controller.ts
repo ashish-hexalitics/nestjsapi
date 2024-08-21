@@ -53,16 +53,33 @@ export class ResumeController {
     }
   }
 
-  @Get('/create/template')
-  async getResumeTemplate(
+  @Get('/get/templates')
+  async getResumeTemplates(
     @Req() req: Request & { user: IUser },
     @Res() res: Response,
   ) {
     try {
-      const templates = await this.resumeService.getResumeTemplate(req);
+      const templates = await this.resumeService.getResumeTemplates(req);
       return res
         .status(HttpStatus.OK)
         .json({ message: 'Resume fetched successfully', templates });
+    } catch (error) {
+      return res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: 'internal server error', error });
+    }
+  }
+
+  @Get('/get/template/:templateId')
+  async getResumeTemplate(
+    @Param('templateId') templateId: string,
+    @Res() res: Response,
+  ) {
+    try {
+      const template = await this.resumeService.getResumeTemplate(templateId);
+      return res
+        .status(HttpStatus.OK)
+        .json({ message: 'Resume fetched successfully', template });
     } catch (error) {
       return res
         .status(HttpStatus.INTERNAL_SERVER_ERROR)

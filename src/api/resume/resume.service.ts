@@ -78,11 +78,22 @@ export class ResumeService {
     }
   }
 
-  async getResumeTemplate(@Req() req: Request & { user: IUser }) {
+  async getResumeTemplates(@Req() req: Request & { user: IUser }) {
     try {
       const user: IUser = req.user;
       const contentets = await this.contentetModel.find({
         createdBy: user._id,
+      });
+      return contentets;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async getResumeTemplate(templateId:string) {
+    try {
+      const contentets = await this.contentetModel.findOne({
+        _id:templateId,
       });
       return contentets;
     } catch (error) {

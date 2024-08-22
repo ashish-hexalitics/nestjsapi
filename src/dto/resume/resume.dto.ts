@@ -16,3 +16,8 @@ export class CreateResumeDto  {
   categoryId: string;
   layer: any[];
 }
+
+export class UpdateResumeDto  {
+  document: string;
+  layer: any[];
+}

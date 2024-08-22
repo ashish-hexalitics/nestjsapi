@@ -19,7 +19,11 @@ import {
 } from '../../schemas/user.education.schema';
 import { User, UserDocument } from '../../schemas/user.schema';
 import { UserInfo, UserInfoDocument } from '../../schemas/user.info.schema';
-import { ResumeDto, CreateResumeDto } from '../../dto/resume/resume.dto';
+import {
+  ResumeDto,
+  CreateResumeDto,
+  UpdateResumeDto,
+} from '../../dto/resume/resume.dto';
 import { Contentet, ContentetDocument } from '../../schemas/document.schema';
 import { IUser } from '../../interfaces/user.interface'; // Adjust the path as needed
 @Injectable()
@@ -90,11 +94,26 @@ export class ResumeService {
     }
   }
 
-  async getResumeTemplate(templateId:string) {
+  async getResumeTemplate(templateId: string) {
     try {
       const contentets = await this.contentetModel.findOne({
-        _id:templateId,
+        _id: templateId,
       });
+      return contentets;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async updateTemplate(templateId: string, resumeData: UpdateResumeDto) {
+    try {
+      const contentets = await this.contentetModel.findOneAndUpdate(
+        {
+          _id: templateId,
+        },
+        resumeData,
+        { new: true },
+      );
       return contentets;
     } catch (error) {
       return error;

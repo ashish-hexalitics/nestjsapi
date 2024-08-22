@@ -119,4 +119,14 @@ export class ResumeService {
       return error;
     }
   }
+  async deleteTemplate(templateId: string) {
+    try {
+      const contentets = await this.contentetModel.findOneAndDelete({
+        _id: templateId,
+      });
+      return contentets;
+    } catch (error) {
+      return error;
+    }
+  }
 }

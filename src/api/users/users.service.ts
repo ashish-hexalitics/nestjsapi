@@ -23,7 +23,7 @@ export class UsersService {
   }
 
   async findAll(): Promise<User[]> {
-    return this.userModel.find().exec();
+    return this.userModel.find().populate('role').exec();
   }
 
   async findOne(id: string): Promise<User | null> {

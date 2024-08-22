@@ -7,7 +7,8 @@ import {
   HttpStatus,
   Post,
   Body,
-  Put
+  Put,
+  Delete
 } from '@nestjs/common';
 import { Response } from 'express';
 import { ResumeService } from './resume.service';
@@ -40,13 +41,13 @@ export class ResumeController {
     @Res() res: Response,
   ) {
     try {
-      const resume = await this.resumeService.createResumeTemplate(
+      const template = await this.resumeService.createResumeTemplate(
         resumeData,
         req,
       );
       return res
         .status(HttpStatus.OK)
-        .json({ message: 'Resume saved successfully', resume });
+        .json({ message: 'Resume saved successfully', template });
     } catch (error) {
       return res
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -99,6 +100,22 @@ export class ResumeController {
       return res
         .status(HttpStatus.OK)
         .json({ message: 'Resume Updated successfully', template });
+    } catch (error) {
+      return res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: 'internal server error', error });
+    }
+  }
+  @Delete('/delete/template/:templateId')
+  async deleteTemplate(
+    @Param('templateId') templateId: string,
+    @Res() res: Response,
+  ) {
+    try {
+      const template = await this.resumeService.deleteTemplate(templateId);
+      return res
+        .status(HttpStatus.OK)
+        .json({ message: 'Resume Deleted successfully', template });
     } catch (error) {
       return res
         .status(HttpStatus.INTERNAL_SERVER_ERROR)

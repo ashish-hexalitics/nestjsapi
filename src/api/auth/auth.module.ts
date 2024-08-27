@@ -68,7 +68,7 @@ export class AuthModule {
         { path: '/api/resume/get/templates', method: RequestMethod.ALL },
         { path: '/api/resume/get/template/:templateId', method: RequestMethod.ALL },
       )
-      .apply(AuthPermission.create(Role.Student))
+      .apply(AuthPermission.create(Role.Utilizer))
       .forRoutes(
         { path: '/api/skills/user/:userId', method: RequestMethod.ALL },
         {

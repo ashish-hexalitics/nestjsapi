@@ -70,7 +70,7 @@ export class AuthService {
     const user: any = await this.usersService.findByEmail(userDto.email);
     if (user && (await bcrypt.compare(userDto.password, user.password))) {
       const { password, ...result } = user.toObject();
-      return result;
+      return { ...result, role: user.role.name };
     }
     return null;
   }

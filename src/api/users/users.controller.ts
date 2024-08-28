@@ -11,7 +11,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UpdateUserDto, UpdateUserInfoDto } from '../../dto/users/user.dto';
+import { UpdateUserDto, UserInfoDto } from '../../dto/users/user.dto';
 import { Response } from 'express';
 
 @Controller('/api/users')
@@ -26,7 +26,7 @@ export class UsersController {
       .json({ message: 'Users fetched successfully', users });
   }
 
-  @Get(':id')
+  @Get('/:id')
   async findOne(@Param('id') id: string, @Res() res: Response) {
     const user = await this.usersService.findOne(id);
     if (!user) {
@@ -69,7 +69,7 @@ export class UsersController {
   @Put('/info/:id')
   async updateUserInfo(
     @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserInfoDto,
+    @Body() updateUserDto: UserInfoDto,
     @Res() res: Response,
   ) {
     const updatedUser = await this.usersService.updateUserInfo(
@@ -98,5 +98,22 @@ export class UsersController {
       message: 'User fetched successfully',
       userInfo,
     });
+  }
+
+  @Get('/get/resume-data')
+  async findUserResumeData(
+    @Req() req: Request & { user: { _id: string } },
+    @Res() res: Response,
+  ) {
+    try {
+      const userId: string = req.user._id
+      const data = await this.usersService.findUserResumeData(userId);
+      return res.status(HttpStatus.OK).json({
+        message: 'User resume data fetched successfully',
+        data,
+      });
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({error});
+    }
   }
 }

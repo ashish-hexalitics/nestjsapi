@@ -47,14 +47,45 @@ export class LoginDto {
   password: string;
 }
 
-export class UpdateUserInfoDto {
+export class UserInfoDto {
   @IsOptional()
   @IsString()
-  address?: string;
+  userId?: string;
 
   @IsOptional()
   @IsString()
+  firstName?: string;
+
+  @IsOptional()
+  @IsString()
+  lastName?: string;
+
+  @IsOptional()
+  @IsString()
+  city?: string;
+
+  @IsOptional()
+  @IsString()
+  state?: string;
+
+  @IsOptional()
+  @IsString()
+  country?: string;
+
+  @IsOptional()
+  @IsString()
+  zipCode?: string;
+
+  @IsOptional()
+  @IsString()
+  address?: string;
+  @IsOptional()
+  @IsString()
   phone?: string;
+
+  @IsOptional()
+  @IsString()
+  otherEmail?: string;
 
   @IsOptional()
   @IsString()

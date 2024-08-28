@@ -26,6 +26,7 @@ import {
 } from '../../dto/resume/resume.dto';
 import { Contentet, ContentetDocument } from '../../schemas/document.schema';
 import { IUser } from '../../interfaces/user.interface'; // Adjust the path as needed
+import { Role } from '../../enums/role.enum';
 @Injectable()
 export class ResumeService {
   constructor(
@@ -85,8 +86,10 @@ export class ResumeService {
   async getResumeTemplates(@Req() req: Request & { user: IUser }) {
     try {
       const user: IUser = req.user;
+      const roleName = user.role.name;
+      console.log(roleName);
       const contentets = await this.contentetModel.find({
-        createdBy: user._id,
+        ...(roleName === Role.Utilizer ? {} : { createdBy: user._id }),
       });
       return contentets;
     } catch (error) {

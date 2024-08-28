@@ -31,6 +31,7 @@ export class AuthModule {
       .forRoutes(
         { path: '/api/users', method: RequestMethod.ALL },
         { path: '/api/users/:id', method: RequestMethod.ALL },
+        { path: '/api/users/get/resume-data', method: RequestMethod.ALL },
         { path: '/api/users/info/:id', method: RequestMethod.ALL },
         { path: '/api/skills', method: RequestMethod.POST },
         { path: '/api/skills/:id', method: RequestMethod.ALL },
@@ -65,7 +66,7 @@ export class AuthModule {
         { path: '/api/skills/:id', method: RequestMethod.PUT },
         { path: '/api/resume/create/template', method: RequestMethod.ALL },
         { path: '/api/template-category', method: RequestMethod.ALL },
-        { path: '/api/resume/get/templates', method: RequestMethod.ALL },
+        { path: '/api/resume/get/templates', method: RequestMethod.POST },
         { path: '/api/resume/get/template/:templateId', method: RequestMethod.ALL },
       )
       .apply(AuthPermission.create(Role.Utilizer))
@@ -86,6 +87,8 @@ export class AuthModule {
           method: RequestMethod.ALL,
         },
         { path: '/api/resume/:userId/', method: RequestMethod.ALL },
+        { path: '/api/resume/get/templates', method: RequestMethod.ALL },
+        { path: '/api/resume/get/template/:templateId', method: RequestMethod.GET },
       );
   }
 }

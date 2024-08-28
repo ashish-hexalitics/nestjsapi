@@ -10,6 +10,12 @@ export class UserInfo {
   userId: Types.ObjectId;
 
   @Prop({ trim: true })
+  firstName: string;
+  
+  @Prop({ trim: true })
+  lastName: string;
+
+  @Prop({ trim: true })
   city: string;
   
   @Prop({ trim: true })
@@ -21,11 +27,15 @@ export class UserInfo {
   @Prop({ trim: true })
   zipCode: string;
 
+  
   @Prop({ trim: true })
   address: string;
-
+  
   @Prop({ trim: true })
   phone: string;
+
+  @Prop({ trim: true })
+  otherEmail: string;
 
   @Prop({ trim: true })
   website: string;

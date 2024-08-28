@@ -2,14 +2,28 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from '../../schemas/user.schema';
-import { UpdateUserDto, UpdateUserInfoDto } from '../../dto/users/user.dto';
+import { UpdateUserDto, UserInfoDto } from '../../dto/users/user.dto';
 import { UserInfo, UserInfoDocument } from '../../schemas/user.info.schema';
+import {
+  UserEmployment,
+  UserEmploymentDocument,
+} from '../../schemas/user.employment.schema';
+import {
+  UserEducation,
+  UserEducationDocument,
+} from '../../schemas/user.education.schema';
+import { Skill, SkillDocument } from '../../schemas/skill.schema';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     @InjectModel(UserInfo.name) private userInfoModel: Model<UserInfoDocument>,
+    @InjectModel(UserEmployment.name)
+    private userEmploymentDocument: Model<UserEmploymentDocument>,
+    @InjectModel(UserEducation.name)
+    private userEducationDocument: Model<UserEducationDocument>,
+    @InjectModel(Skill.name) private skillDocument: Model<SkillDocument>,
   ) {}
 
   async create(user: any): Promise<User> {
@@ -18,7 +32,10 @@ export class UsersService {
   }
 
   async findByEmail(email: string): Promise<User | undefined> {
-    const user = await this.userModel.findOne({ email }).populate('role').exec();
+    const user = await this.userModel
+      .findOne({ email })
+      .populate('role')
+      .exec();
     return user ?? undefined;
   }
 
@@ -46,7 +63,7 @@ export class UsersService {
 
   async updateUserInfo(
     userId: string,
-    updateUserInfoDto: UpdateUserInfoDto,
+    updateUserInfoDto: UserInfoDto,
   ): Promise<UserInfo> {
     try {
       // Find the user info by userId
@@ -72,6 +89,29 @@ export class UsersService {
       return userInfo as UserInfo;
     } catch (error) {
       throw new Error(`Failed to update user info: ${error.message}`);
+    }
+  }
+
+  async findUserResumeData(id: string): Promise<any> {
+    try {
+      const user = await this.userModel.findOne({ _id: id }).exec();
+      const userInfo = await this.userInfoModel.findOne({ userId: id }).exec();
+      const employments = await this.userEmploymentDocument
+        .find({ userId: id })
+        .exec();
+      const educations = await this.userEducationDocument
+        .find({ userId: id })
+        .exec();
+      const skills = await this.skillDocument.find({ userId: id }).exec();
+      return {
+        user,
+        userInfo,
+        employments,
+        educations,
+        skills,
+      };
+    } catch (error) {
+      throw new Error(`Failed to fetched user info: ${error.message}`);
     }
   }
 }

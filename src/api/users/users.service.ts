@@ -12,7 +12,7 @@ import {
   UserEducation,
   UserEducationDocument,
 } from '../../schemas/user.education.schema';
-import { Skill, SkillDocument } from '../../schemas/skill.schema';
+import { UserSkill, UserSkillDocument } from '../../schemas/user.skill.schema';
 
 @Injectable()
 export class UsersService {
@@ -23,7 +23,7 @@ export class UsersService {
     private userEmploymentDocument: Model<UserEmploymentDocument>,
     @InjectModel(UserEducation.name)
     private userEducationDocument: Model<UserEducationDocument>,
-    @InjectModel(Skill.name) private skillDocument: Model<SkillDocument>,
+    @InjectModel(UserSkill.name) private userSkillDocument: Model<UserSkillDocument>,
   ) {}
 
   async create(user: any): Promise<User> {
@@ -102,7 +102,7 @@ export class UsersService {
       const educations = await this.userEducationDocument
         .find({ userId: id })
         .exec();
-      const skills = await this.skillDocument.find({ userId: id }).exec();
+      const skills = await this.userSkillDocument.find({ userId: id }).populate('skillId').exec();
       return {
         user,
         userInfo,

@@ -29,6 +29,15 @@ export class UserEducation {
 
   @Prop({ required: false })
   description?: string;
+
+  @Prop({ required: true })
+  city: string;
+
+  @Prop({ required: true })
+  state: string;
+
+  @Prop({ required: true })
+  country: string;
 }
 
 export const UserEducationSchema = SchemaFactory.createForClass(UserEducation);

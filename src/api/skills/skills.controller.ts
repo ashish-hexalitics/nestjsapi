@@ -8,6 +8,7 @@ import {
   Res,
   Param,
   Body,
+  Req,
 } from '@nestjs/common';
 import { SkillsService } from './skills.service';
 import { Response } from 'express';
@@ -61,8 +62,12 @@ export class SkillsController {
       .json({ message: 'Skill deleted successfully', skill });
   }
 
-  @Get('/user/:userId')
-  async getUserSkills(@Param('userId') userId: string, @Res() res: Response) {
+  @Get('/get/user-skill')
+  async getUserSkills(
+    @Req() req: Request & { user: { _id: string } },
+    @Res() res: Response,
+  ) {
+    const userId: string = req.user._id
     const skills = await this.skillsService.getUserSkills(userId);
     if (!skills) {
       return res
@@ -74,12 +79,13 @@ export class SkillsController {
       .json({ message: 'User Skills fetched successfully', skills });
   }
 
-  @Post('/user/:userId')
+  @Post('/add/user-skill')
   async addUserSkills(
-    @Param('userId') userId: string,
+    @Req() req: Request & { user: { _id: string } },
     @Body() skillDto: UserSkillDto,
     @Res() res: Response,
   ) {
+    const userId: string = req.user._id
     const userRole = await this.skillsService.checkRoleByUserId(userId);
     if (!userRole) {
       return res.status(400).json({ message: 'Invalid Id Provided', userId });

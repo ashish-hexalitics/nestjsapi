@@ -15,4 +15,7 @@ export class UserSkillDto {
   @IsString()
   @IsNotEmpty()
   skillId: string;
+  @IsString()
+  @IsNotEmpty()
+  proficiencyLevel: string;
 }

@@ -67,8 +67,8 @@ export class AuthModule {
         { path: '/api/skills/:id', method: RequestMethod.PUT },
         { path: '/api/resume/create/template', method: RequestMethod.ALL },
         { path: '/api/template-category', method: RequestMethod.ALL },
-        { path: '/api/resume/get/templates', method: RequestMethod.POST },
-        { path: '/api/resume/get/template/:templateId', method: RequestMethod.ALL },
+        // { path: '/api/resume/get/templates', method: RequestMethod.ALL },
+        // { path: '/api/resume/get/template/:templateId', method: RequestMethod.ALL },
       )
       .apply(AuthPermission.create(Role.Utilizer))
       .forRoutes(
@@ -87,8 +87,8 @@ export class AuthModule {
           method: RequestMethod.ALL,
         },
         { path: '/api/resume/:userId/', method: RequestMethod.ALL },
-        { path: '/api/resume/get/templates', method: RequestMethod.ALL },
-        { path: '/api/resume/get/template/:templateId', method: RequestMethod.GET },
+        // { path: '/api/resume/get/templates', method: RequestMethod.ALL },
+        // { path: '/api/resume/get/template/:templateId', method: RequestMethod.GET },
         { path: '/api/skills/add-user-skill', method: RequestMethod.ALL },
       );
   }

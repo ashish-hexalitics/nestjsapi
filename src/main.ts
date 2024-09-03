@@ -7,11 +7,16 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: 'https://whimsical-paletas-3b0383.netlify.app/',
-    // origin: 'http://localhost:5173',
+    origin: 'https://whimsical-paletas-3b0383.netlify.app',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
+
+  // app.enableCors({
+  //   origin: 'http://localhost:5173',
+  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  //   credentials: true,
+  // });
 
   // Enable validation globally
   app.useGlobalPipes(new ValidationPipe());

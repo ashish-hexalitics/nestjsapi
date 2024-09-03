@@ -7,7 +7,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: 'http://ec2-13-60-22-180.eu-north-1.compute.amazonaws.com:3000',
+    origin: 'https://66d70c206e9fc3347622565a--whimsical-paletas-3b0383.netlify.app/',
     // origin: 'http://localhost:5173',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,

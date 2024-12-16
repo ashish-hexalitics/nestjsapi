@@ -36,6 +36,10 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   role?: string;
+
+  @IsOptional()
+  @IsString()
+  summary?: string;
 }
 
 export class LoginDto {
@@ -94,6 +98,10 @@ export class UserInfoDto {
   @IsOptional()
   @IsString()
   gender?: string;
+
+  @IsOptional()
+  @IsString()
+  summary?: string;
 
   @IsOptional()
   @IsString()

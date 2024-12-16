@@ -45,6 +45,9 @@ export class UserInfo {
   description: string;
 
   @Prop({ trim: true })
+  summary: string;
+
+  @Prop({ trim: true })
   title: string;
 
   @Prop({ trim: true })

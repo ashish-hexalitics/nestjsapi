@@ -62,7 +62,7 @@ export class AuthService {
     } catch (error) {
       return res
         .status(500)
-        .json({ message: 'Internal server error', status: 'error' });
+        .json({ message: error.errors , status: "fail" });
     }
   }
 

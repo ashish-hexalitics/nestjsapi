@@ -15,6 +15,9 @@ export class UserInfo {
   lastName: string;
 
   @Prop({ trim: true })
+  name: string;
+
+  @Prop({ trim: true })
   city: string;
 
   @Prop({ trim: true })
@@ -42,6 +45,9 @@ export class UserInfo {
   gender: string;
 
   @Prop({ trim: true })
+  marriedStatus: boolean;
+
+  @Prop({ trim: true })
   description: string;
 
   @Prop({ trim: true })
@@ -58,5 +64,22 @@ export class UserInfo {
 }
 
 export const UserInfoSchema = SchemaFactory.createForClass(UserInfo);
+
+
+UserInfoSchema.pre<UserInfoDocument>('save', function (next) {
+  // Combine firstName and lastName into name
+  if (this.firstName || this.lastName) {
+    this.name = `${this.firstName || ''} ${this.lastName || ''}`.trim();
+  }
+
+  // Combine city, state, and country into address
+  if (this.city || this.state || this.country) {
+    const addressParts = [this.city, this.state, this.country].filter(Boolean);
+    this.address = addressParts.join(', ').trim();
+  }
+
+  next();
+});
+
 
 UserInfoSchema.index({ userId: 1 });

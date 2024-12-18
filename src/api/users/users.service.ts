@@ -224,9 +224,7 @@ export class UsersService {
       });
 
       // Return completion status along with user data
-      return {
-        completionStatus,
-      };
+      return completionStatus
     } catch (error) {
       throw new Error(`Failed to fetch user info: ${error.message}`);
     }

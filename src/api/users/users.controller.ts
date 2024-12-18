@@ -91,7 +91,7 @@ export class UsersController {
     if (!userInfo) {
       return res.status(HttpStatus.OK).json({
         message: 'userInfo not found',
-        userInfo:{},
+        userInfo: {},
       });
     }
     return res.status(HttpStatus.OK).json({
@@ -106,14 +106,33 @@ export class UsersController {
     @Res() res: Response,
   ) {
     try {
-      const userId: string = req.user._id
+      const userId: string = req.user._id;
       const data = await this.usersService.findUserResumeData(userId);
       return res.status(HttpStatus.OK).json({
         message: 'User resume data fetched successfully',
         data,
       });
     } catch (error) {
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({error});
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error });
+    }
+  }
+
+  @Get('step/completion/status')
+  async getUserCompletionStatus(
+    @Req() req: Request & { user: { _id: string } },
+    @Res() res: Response,
+  ) {
+    try {
+      const userId: string = req.user._id;
+      const completionStatus =
+        await this.usersService.getUserCompletionStatus(userId);
+
+      return res.status(HttpStatus.OK).json({
+        message: 'User completion status fetched successfully',
+        completionStatus,
+      });
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error });
     }
   }
 }

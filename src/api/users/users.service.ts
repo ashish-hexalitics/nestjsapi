@@ -23,7 +23,8 @@ export class UsersService {
     private userEmploymentDocument: Model<UserEmploymentDocument>,
     @InjectModel(UserEducation.name)
     private userEducationDocument: Model<UserEducationDocument>,
-    @InjectModel(UserSkill.name) private userSkillDocument: Model<UserSkillDocument>,
+    @InjectModel(UserSkill.name)
+    private userSkillDocument: Model<UserSkillDocument>,
   ) {}
 
   async create(user: any): Promise<User> {
@@ -102,7 +103,10 @@ export class UsersService {
       const educations = await this.userEducationDocument
         .find({ userId: id })
         .exec();
-      const skills = await this.userSkillDocument.find({ userId: id }).populate('skillId').exec();
+      const skills = await this.userSkillDocument
+        .find({ userId: id })
+        .populate('skillId')
+        .exec();
       return {
         user,
         userInfo,
@@ -112,6 +116,119 @@ export class UsersService {
       };
     } catch (error) {
       throw new Error(`Failed to fetched user info: ${error.message}`);
+    }
+  }
+
+  async getUserCompletionStatus(id: string): Promise<any> {
+    try {
+      // Fetch user data from the database
+      // const user = await this.userModel.findOne({ _id: id }).exec();
+      const userInfo: any = await this.userInfoModel
+        .findOne({ userId: id })
+        .exec();
+      const employments: any[] = await this.userEmploymentDocument
+        .find({ userId: id })
+        .exec();
+      const educations: any[] = await this.userEducationDocument
+        .find({ userId: id })
+        .exec();
+      const skills = await this.userSkillDocument
+        .find({ userId: id })
+        .populate('skillId')
+        .exec();
+
+      // Define steps and validation logic
+      const steps = [
+        { route: 'build-resume/contact', step: 1, field: 'userInfo' },
+        { route: 'build-resume/experience', step: 2, field: 'employments' },
+        { route: 'build-resume/education', step: 3, field: 'educations' },
+        { route: 'build-resume/skills', step: 4, field: 'skills' },
+        {
+          route: 'build-resume/additional-details',
+          step: 5,
+          field: 'additionalDetails',
+        },
+      ];
+
+      // Validation functions
+      const isContactComplete = () =>
+        userInfo &&
+        [
+          'firstName',
+          'lastName',
+          'city',
+          'country',
+          'zipCode',
+          'phone',
+          'otherEmail',
+        ].every((field) => userInfo[field]);
+
+      const isExperienceComplete = () =>
+        employments &&
+        employments.length > 0 &&
+        employments.every((emp) =>
+          [
+            'company',
+            'title',
+            'city',
+            'state',
+            'country',
+            'startDate',
+            'endDate',
+          ].every((field) => emp[field]),
+        );
+
+      const isEducationComplete = () =>
+        educations &&
+        educations.length > 0 &&
+        educations.every((edu) =>
+          [
+            'institution',
+            'degree',
+            'fieldOfStudy',
+            'city',
+            'state',
+            'country',
+            'startDate',
+            'endDate',
+          ].every((field) => edu[field]),
+        );
+
+      const isSkillsComplete = () =>
+        skills &&
+        skills.length > 0 &&
+        skills.every((skill) => skill.skillId && skill.proficiencyLevel);
+
+      const isOtherComplete = () =>
+        userInfo &&
+        ['hobbies', 'languagesKnown', 'marriedStatus'].every(
+          (field) => userInfo[field],
+        );
+
+      // Determine completion status for each step
+      const completionStatus = steps.map((step) => {
+        switch (step.field) {
+          case 'userInfo':
+            return { ...step, completed: isContactComplete() };
+          case 'employments':
+            return { ...step, completed: isExperienceComplete() };
+          case 'educations':
+            return { ...step, completed: isEducationComplete() };
+          case 'skills':
+            return { ...step, completed: isSkillsComplete() };
+          case 'additionalDetails':
+            return { ...step, completed: isOtherComplete() };
+          default:
+            return { ...step, completed: false }; // Placeholder for additional details
+        }
+      });
+
+      // Return completion status along with user data
+      return {
+        completionStatus,
+      };
+    } catch (error) {
+      throw new Error(`Failed to fetch user info: ${error.message}`);
     }
   }
 }

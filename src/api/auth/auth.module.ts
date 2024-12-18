@@ -33,6 +33,7 @@ export class AuthModule {
         { path: '/api/users/:id', method: RequestMethod.ALL },
         { path: '/api/users/get/resume-data', method: RequestMethod.ALL },
         { path: '/api/users/info/:id', method: RequestMethod.ALL },
+        { path: '/api/users/step/completion/status', method: RequestMethod.GET },
         { path: '/api/skills', method: RequestMethod.POST },
         { path: '/api/skills/:id', method: RequestMethod.ALL },
         { path: '/api/skills/get/user-skill', method: RequestMethod.ALL },

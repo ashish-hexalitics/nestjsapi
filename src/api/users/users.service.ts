@@ -201,7 +201,7 @@ export class UsersService {
 
       const isOtherComplete = () =>
         userInfo &&
-        ['hobbies', 'languagesKnown', 'marriedStatus'].every(
+        ['hobbies', 'languagesKnown', 'summary', 'marriedStatus'].every(
           (field) => userInfo[field],
         );
 
@@ -224,7 +224,7 @@ export class UsersService {
       });
 
       // Return completion status along with user data
-      return completionStatus
+      return completionStatus;
     } catch (error) {
       throw new Error(`Failed to fetch user info: ${error.message}`);
     }

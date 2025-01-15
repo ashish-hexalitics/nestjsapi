@@ -58,7 +58,8 @@ export class AuthModule {
         { path: '/api/resume/create/template', method: RequestMethod.ALL },
         { path: '/api/resume/get/templates', method: RequestMethod.ALL },
         { path: '/api/resume/get/template/:templateId', method: RequestMethod.ALL },
-        { path: '/api/template-category', method: RequestMethod.ALL }
+        { path: '/api/template-category', method: RequestMethod.ALL },
+        { path: '/api/ai', method: RequestMethod.ALL },
       )
       .apply(AuthPermission.create(Role.Admin))
       .forRoutes(

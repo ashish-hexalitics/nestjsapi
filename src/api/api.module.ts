@@ -9,6 +9,8 @@ import { EmploymentsModule } from './employments/employments.module';
 import { EducationsModule } from './educations/educations.module';
 import { ResumeModule } from './resume/resume.module';
 import { TemplateCategoryModule } from './template-category/template-category.module';
+import { AiController } from './ai/ai.controller';
+import { AiModule } from './ai/ai.module';
 @Module({
   imports: [
     RolesModule,
@@ -18,9 +20,10 @@ import { TemplateCategoryModule } from './template-category/template-category.mo
     EmploymentsModule,
     EducationsModule,
     ResumeModule,
-    TemplateCategoryModule
+    TemplateCategoryModule,
+    AiModule
   ],
-  controllers: [ApiController],
+  controllers: [ApiController, AiController],
   providers: [ApiService],
 })
 export class ApiModule {}
